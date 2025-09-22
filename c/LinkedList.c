@@ -15,8 +15,45 @@ node* tail=NULL;
 
 int countNode=0;
 
+node* get_node(int index){
+    if(index<1 && index > countNode){
+        printf("Invalid access");
+        return NULL;
+    }
 
+    node*cur=head;
 
+    for(int i=1;i<=countNode;i++){
+        if(i==index) break;
+        cur=cur->next;
+    }
+
+    return cur;
+
+}
+
+//recursion ver
+void print_list(node*node){
+    if(node==NULL){
+        return;
+    }
+
+    if (node->next!=NULL){
+        printf("%d -> ", node->data);
+        print_list(node->next);
+    } else {
+        printf("%d\n", node->data);
+    }
+}
+// recursion ver
+void print_reversed_list(node*node){
+    if(node==NULL) return;
+
+    if(node->prev!=NULL){
+        printf("%d -> ",node->data);
+        print_reversed_list(node->prev);
+    } else printf("%d\n", node->data);
+}
 
 void push(int data){
     node*newNode=(node*)malloc(sizeof(node));
@@ -64,6 +101,7 @@ void insert(int index, int data){
         }
         cur=cur->next;
     }
+    countNode++;
 
 }
 
@@ -96,6 +134,7 @@ void delete_node(int index){
     }
 }
 
+// loop ver
 void show_list(){
     node*cur=head;
 
@@ -107,7 +146,7 @@ void show_list(){
         printf("\n-----------------------------------\n");
     }
 }
-
+// loop ver
 void show_reversed_list(){
     node*cur=tail;
 
@@ -138,8 +177,8 @@ int main(){
     // show_reversed_list();
 
     insert(3,100);
-    show_list();
-    show_reversed_list();
+    print_list(get_node(5));
+    print_reversed_list(get_node(5));
 
     printf("%d",countNode);
 
