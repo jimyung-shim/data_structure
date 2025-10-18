@@ -28,22 +28,19 @@ private fun <T : Comparable<T>> ArrayList<T>.startIndex(
     range: IntRange
 ): Int? {
     val middleIndex = range.start + (range.last - range.start + 1) / 2
-    if (middleIndex == 0 || middleIndex == size - 1) {
-        return if (this[middleIndex] == value)
-            middleIndex
-        else
-            null
-    }
+    if (range.last < range.start || range.start >= size)
+        return null
+
     return if (this[middleIndex] == value) {
-        if (this[middleIndex - 1] != value)
+        val isStartIndex = middleIndex == 0 || this[middleIndex - 1] != value
+        if (isStartIndex)
             middleIndex
         else
             startIndex(value, range.start until middleIndex)
-    } else if (value < this[middleIndex]) {
+    } else if (value < this[middleIndex])
         startIndex(value, range.start until middleIndex)
-    } else {
+    else
         startIndex(value, (middleIndex + 1)..range.last)
-    }
 }
 
 private fun <T : Comparable<T>> ArrayList<T>.endIndex(
@@ -51,20 +48,18 @@ private fun <T : Comparable<T>> ArrayList<T>.endIndex(
     range: IntRange
 ): Int? {
     val middleIndex = range.start + (range.last - range.start + 1) / 2
-    if (middleIndex == 0 || middleIndex == size - 1) {
-        return if (this[middleIndex] == value)
-            middleIndex + 1
-        else
-            null
-    }
+    if (range.last < range.start || range.start >= size)
+        return null
+
     return if (this[middleIndex] == value) {
-        if (this[middleIndex + 1] != value)
+        val isEndIndex = middleIndex == size - 1 || this[middleIndex + 1] != value
+        if (isEndIndex)
             middleIndex + 1
         else
             endIndex(value, (middleIndex + 1)..range.last)
-    } else if (value < this[middleIndex]) {
+    } else if (value < this[middleIndex])
         endIndex(value, range.start until middleIndex)
-    } else {
+    else
         endIndex(value, (middleIndex + 1)..range.last)
-    }
 }
+
